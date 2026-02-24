@@ -37,12 +37,12 @@ Returns a JSON array of all opportunities. Optional query parameters:
 - **`type`** — filter by opportunity type (case-insensitive): `Scholarship`, `Internship`, `Organization`, `Event`, `Fellowship`
 - **`q`** — keyword search in title and tags (case-insensitive)
 
-| Method | URL | Query params |
-|--------|-----|--------------|
-| GET | `http://localhost:8080/api/opportunities` | none |
-| GET | `http://localhost:8080/api/opportunities` | `type=Scholarship` |
-| GET | `http://localhost:8080/api/opportunities` | `q=STEM` |
-| GET | `http://localhost:8080/api/opportunities` | `type=Internship`, `q=paid` |
+| Method | URL                                       | Query params                |
+| ------ | ----------------------------------------- | --------------------------- |
+| GET    | `http://localhost:8080/api/opportunities` | none                        |
+| GET    | `http://localhost:8080/api/opportunities` | `type=Scholarship`          |
+| GET    | `http://localhost:8080/api/opportunities` | `q=STEM`                    |
+| GET    | `http://localhost:8080/api/opportunities` | `type=Internship`, `q=paid` |
 
 **Sample Postman request — all opportunities**
 
@@ -69,10 +69,10 @@ Returns a JSON array of all opportunities. Optional query parameters:
 
 ### Get a single opportunity by ID
 
-| Method | URL | Response |
-|--------|-----|----------|
-| GET | `http://localhost:8080/api/opportunities/opp-001` | 200 OK with opportunity JSON |
-| GET | `http://localhost:8080/api/opportunities/opp-999` | 404 Not Found |
+| Method | URL                                               | Response                     |
+| ------ | ------------------------------------------------- | ---------------------------- |
+| GET    | `http://localhost:8080/api/opportunities/opp-001` | 200 OK with opportunity JSON |
+| GET    | `http://localhost:8080/api/opportunities/opp-999` | 404 Not Found                |
 
 **Sample Postman request — valid ID**
 
@@ -105,3 +105,7 @@ Each opportunity object includes:
 - `description` — brief summary
 - `tags` — array of keywords for searching
 - `url` — link to learn more or apply
+
+## AI Disclosure
+
+I used AI to help me write this README.md file and serve as a guide for the project. I used the following tools: ChatGPT
