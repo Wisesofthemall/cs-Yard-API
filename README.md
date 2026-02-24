@@ -26,6 +26,8 @@ From the project root:
 mvn test
 ```
 
+If you use **Java 23 or later**, the project enables Byte Buddy’s experimental support so Mockito-based tests run correctly (no extra setup needed).
+
 ## API Endpoints (Part 1 — Read Only)
 
 All endpoints return JSON. Base URL: `http://localhost:8080`.
