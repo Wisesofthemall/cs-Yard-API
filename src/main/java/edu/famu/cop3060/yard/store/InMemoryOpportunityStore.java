@@ -5,7 +5,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -22,8 +24,8 @@ public class InMemoryOpportunityStore {
 
     public InMemoryOpportunityStore() {
         List<OpportunityDTO> seed = buildSeedData();
-        this.byId = seed.stream().collect(Collectors.toUnmodifiableMap(OpportunityDTO::id, o -> o));
-        this.all = List.copyOf(seed);
+        this.byId = new HashMap<>(seed.stream().collect(Collectors.toMap(OpportunityDTO::id, o -> o)));
+        this.all = new ArrayList<>(seed);
         log.info("Seeded {} opportunities into the in-memory store.", all.size());
     }
 
@@ -49,6 +51,44 @@ public class InMemoryOpportunityStore {
             );
         }
         return stream.toList();
+    }
+
+    /**
+     * Adds a new opportunity (with ID already set) to the store. Keeps map and list in sync.
+     */
+    public OpportunityDTO create(OpportunityDTO dto) {
+        byId.put(dto.id(), dto);
+        all.add(dto);
+        return dto;
+    }
+
+    /**
+     * Replaces an existing opportunity by id. Returns empty if the id does not exist.
+     */
+    public Optional<OpportunityDTO> update(String id, OpportunityDTO dto) {
+        if (!byId.containsKey(id)) {
+            return Optional.empty();
+        }
+        byId.put(id, dto);
+        for (int i = 0; i < all.size(); i++) {
+            if (all.get(i).id().equals(id)) {
+                all.set(i, dto);
+                break;
+            }
+        }
+        return Optional.of(dto);
+    }
+
+    /**
+     * Removes an opportunity by id. Returns true if removed, false if id did not exist.
+     */
+    public boolean delete(String id) {
+        if (!byId.containsKey(id)) {
+            return false;
+        }
+        byId.remove(id);
+        all.removeIf(o -> o.id().equals(id));
+        return true;
     }
 
     private static List<OpportunityDTO> buildSeedData() {
