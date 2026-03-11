@@ -186,6 +186,9 @@ Each opportunity object includes:
 - `tags` — array of keywords for searching
 - `url` — link to learn more or apply
 
+Walkthrough of the project:
+[Walkthrough](https://youtu.be/jApyJaCWods?si=XRQhpMVOCE5jkVDa)
+
 ## AI Disclosure
 
 I used AI to help me write this README.md file and serve as a guide for the project. I used the following tools: ChatGPT.
