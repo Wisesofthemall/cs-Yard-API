@@ -18,6 +18,31 @@ A REST API that helps HBCU students discover campus organizations, scholarship o
 
 3. The API will be available at `http://localhost:8080`.
 
+### Database (Part 3 — persistence)
+
+Opportunities are stored in **H2** using **Spring Data JPA**. By default the app uses a **file-backed** database under `./data/` (see [`application.properties`](src/main/resources/application.properties)) so data survives restarts—useful for demos and local development. The `./data/` directory is gitignored.
+
+- **H2 console** (dev only): with the app running, open `http://localhost:8080/h2-console`. JDBC URL must match your config (e.g. `jdbc:h2:file:./data/yard`), user `sa`, empty password unless you change it.
+
+#### Schema
+
+| Table                 | Description                                                                                                                                                     |
+| --------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`opportunity`**     | One row per listing. **Primary key:** `id` (string, e.g. `opp-001`). Columns: `title`, `type`, `sponsor`, `deadline`, `description`, `url`.                     |
+| **`opportunity_tag`** | One row per tag; **foreign key** `opportunity_id` → `opportunity.id`. Storing tags in a child table matches the API’s `tags` array and supports keyword search. |
+
+Hibernate creates/updates tables (`spring.jpa.hibernate.ddl-auto=update`). On first run with an empty database, [`OpportunityDataSeeder`](src/main/java/edu/famu/cop3060/yard/config/OpportunityDataSeeder.java) loads eight sample opportunities (`opp-001` … `opp-008`). New creates get the next `opp-NNN` id based on the **maximum numeric suffix** in the database.
+
+#### Endpoint summary
+
+| Method | Path                      | Purpose                        |
+| ------ | ------------------------- | ------------------------------ |
+| GET    | `/api/opportunities`      | List all; optional `type`, `q` |
+| GET    | `/api/opportunities/{id}` | Get one                        |
+| POST   | `/api/opportunities`      | Create (server-generated `id`) |
+| PUT    | `/api/opportunities/{id}` | Full replace                   |
+| DELETE | `/api/opportunities/{id}` | Delete                         |
+
 ## Running the Tests
 
 From the project root:
@@ -27,6 +52,8 @@ mvn test
 ```
 
 If you use **Java 23 or later**, the project enables Byte Buddy’s experimental support so Mockito-based tests run correctly (no extra setup needed).
+
+Controller slice tests live in `OpportunitiesControllerTest`; full-stack persistence tests are in `OpportunitiesApiIntegrationTest` (in-memory H2, database reset per test).
 
 ## API Endpoints (Part 1 — Read Only)
 
@@ -189,6 +216,14 @@ Each opportunity object includes:
 Walkthrough of the project:
 [Walkthrough](https://youtu.be/jApyJaCWods?si=XRQhpMVOCE5jkVDa)
 
+## Demo video (assignment)
+
+- **Demo:** [Yard API — database & JPA demo](https://youtu.be/nA0Sypbtrys)
+
+## AI use
+
+See [`AI_LOG.md`](AI_LOG.md) for prompts, outputs, and how results were reviewed or changed.
+
 ## AI Disclosure
 
-I used AI to help me write this README.md file and serve as a guide for the project. I used the following tools: ChatGPT.
+This README was updated for the persistence assignment. AI assistance is documented in [`AI_LOG.md`](AI_LOG.md); earlier README drafting also used ChatGPT as noted in prior versions.
