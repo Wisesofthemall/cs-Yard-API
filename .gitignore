@@ -1,3 +1,6 @@
+# H2 file database (local dev)
+data/
+
 # Build
 target/
 *.jar
