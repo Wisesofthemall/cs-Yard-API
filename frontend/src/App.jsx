@@ -4,6 +4,7 @@ import Footer from './components/Footer.jsx'
 import HomePage from './pages/HomePage.jsx'
 import AboutPage from './pages/AboutPage.jsx'
 import OpportunityListPage from './pages/OpportunityListPage.jsx'
+import OpportunityDetailPage from './pages/OpportunityDetailPage.jsx'
 
 function ComingSoon({ label }) {
   return (
@@ -48,7 +49,7 @@ function App() {
             />
             <Route
               path="/opportunities/:id"
-              element={<ComingSoon label="Detail view coming soon" />}
+              element={<OpportunityDetailPage />}
             />
             <Route
               path="/opportunities/:id/edit"
