@@ -6,10 +6,12 @@ import {
   getOpportunity,
   updateOpportunity,
 } from '../services/opportunityApi.js'
+import { useAppContext } from '../context/AppContext.jsx'
 
 function OpportunityEditPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { showAlert } = useAppContext()
   const [opportunity, setOpportunity] = useState(null)
   const [loading, setLoading] = useState(true)
   const [loadError, setLoadError] = useState(null)
@@ -30,9 +32,8 @@ function OpportunityEditPage() {
 
   async function handleSubmit(payload) {
     const updated = await updateOpportunity(id, payload)
-    navigate(`/opportunities/${id}`, {
-      state: { flash: `Updated “${updated.title}”.` },
-    })
+    showAlert('success', `Updated “${updated.title}”.`)
+    navigate(`/opportunities/${id}`)
   }
 
   if (loading) {

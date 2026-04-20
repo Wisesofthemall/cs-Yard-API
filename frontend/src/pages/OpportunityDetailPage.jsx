@@ -6,10 +6,12 @@ import {
   deleteOpportunity,
   getOpportunity,
 } from '../services/opportunityApi.js'
+import { useAppContext } from '../context/AppContext.jsx'
 
 function OpportunityDetailPage() {
   const { id } = useParams()
   const navigate = useNavigate()
+  const { showAlert } = useAppContext()
   const [opportunity, setOpportunity] = useState(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -36,9 +38,8 @@ function OpportunityDetailPage() {
     setDeleteError(null)
     try {
       await deleteOpportunity(id)
-      navigate('/opportunities', {
-        state: { flash: `Deleted “${opportunity.title}”.` },
-      })
+      showAlert('success', `Deleted “${opportunity.title}”.`)
+      navigate('/opportunities')
     } catch (err) {
       setDeleteError(err.message || 'Could not delete this opportunity.')
       setDeleting(false)
