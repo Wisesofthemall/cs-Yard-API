@@ -5,21 +5,8 @@ import HomePage from './pages/HomePage.jsx'
 import AboutPage from './pages/AboutPage.jsx'
 import OpportunityListPage from './pages/OpportunityListPage.jsx'
 import OpportunityDetailPage from './pages/OpportunityDetailPage.jsx'
-
-function ComingSoon({ label }) {
-  return (
-    <div className="container py-5 text-center">
-      <h1 className="h3 mb-3">{label}</h1>
-      <p className="text-muted mb-4">
-        This page is wired into the router shell and will be implemented
-        in the next commits.
-      </p>
-      <Link to="/" className="btn btn-primary">
-        Back to Home
-      </Link>
-    </div>
-  )
-}
+import OpportunityCreatePage from './pages/OpportunityCreatePage.jsx'
+import OpportunityEditPage from './pages/OpportunityEditPage.jsx'
 
 function NotFound() {
   return (
@@ -45,7 +32,7 @@ function App() {
             <Route path="/opportunities" element={<OpportunityListPage />} />
             <Route
               path="/opportunities/new"
-              element={<ComingSoon label="Create form coming soon" />}
+              element={<OpportunityCreatePage />}
             />
             <Route
               path="/opportunities/:id"
@@ -53,7 +40,7 @@ function App() {
             />
             <Route
               path="/opportunities/:id/edit"
-              element={<ComingSoon label="Edit form coming soon" />}
+              element={<OpportunityEditPage />}
             />
             <Route path="*" element={<NotFound />} />
           </Routes>
