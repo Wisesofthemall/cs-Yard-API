@@ -3,6 +3,7 @@ import NavBar from './components/NavBar.jsx'
 import Footer from './components/Footer.jsx'
 import HomePage from './pages/HomePage.jsx'
 import AboutPage from './pages/AboutPage.jsx'
+import OpportunityListPage from './pages/OpportunityListPage.jsx'
 
 function ComingSoon({ label }) {
   return (
@@ -40,10 +41,7 @@ function App() {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/about" element={<AboutPage />} />
-            <Route
-              path="/opportunities"
-              element={<ComingSoon label="Opportunities list coming soon" />}
-            />
+            <Route path="/opportunities" element={<OpportunityListPage />} />
             <Route
               path="/opportunities/new"
               element={<ComingSoon label="Create form coming soon" />}
