@@ -306,7 +306,7 @@ VITE_API_BASE_URL=http://localhost:8080/api
 
 ### Demo video (PA05)
 
-- **PA05 demo:** _[link to be added after recording]_
+- **PA05 demo:** _[https://youtu.be/HNxtfSoJKKA]_
 
 ## Demo video (assignment)
 
