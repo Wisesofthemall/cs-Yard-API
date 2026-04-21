@@ -216,6 +216,98 @@ Each opportunity object includes:
 Walkthrough of the project:
 [Walkthrough](https://youtu.be/jApyJaCWods?si=XRQhpMVOCE5jkVDa)
 
+## Frontend (PA05)
+
+PA05 adds a React single-page app in [`frontend/`](frontend/) that consumes every endpoint listed above. The backend and frontend run side-by-side during development.
+
+### Frontend technologies
+
+- **React 19** with functional components and hooks
+- **Vite 8** for the dev server and production bundling
+- **React Router 7** for routing between pages
+- **Bootstrap 5.3** for responsive layout, navbar, cards, forms, alerts, modal
+- A separate custom stylesheet at [`frontend/src/styles/custom.css`](frontend/src/styles/custom.css)
+- Native **fetch API** wrapped in a single service module
+- **React Context** (`AppContext`) for a shared alert system
+
+### Backend technologies
+
+- Java 17, Spring Boot 3.2, Spring Web MVC, Spring Data JPA
+- H2 (file-backed) for persistence
+- Bean Validation + a `@ControllerAdvice` that returns 400 with a `{field: message}` JSON map
+- [`CorsConfig`](src/main/java/edu/famu/cop3060/yard/config/CorsConfig.java) whitelists `http://localhost:5173` for `/api/**` so the Vite dev server can reach the API
+
+### Running the backend
+
+```bash
+mvn spring-boot:run
+```
+
+API at `http://localhost:8080`.
+
+### Running the frontend
+
+```bash
+cd frontend
+npm install
+npm run dev
+```
+
+Dev server at `http://localhost:5173`. Start the backend first; the React app will fail to load data if port 8080 is not responding.
+
+### Environment variables (optional)
+
+Create `frontend/.env.local` to override the API base URL:
+
+```
+VITE_API_BASE_URL=http://localhost:8080/api
+```
+
+### Frontend pages
+
+| Route                         | Page                    | Purpose                                                                |
+| ----------------------------- | ----------------------- | ---------------------------------------------------------------------- |
+| `/`                           | Home                    | Hero + feature cards + CTAs to browse and add                          |
+| `/opportunities`              | List                    | All opportunities as cards; filter by type and keyword                 |
+| `/opportunities/:id`          | Detail                  | Full record + Back, Edit, Delete actions                               |
+| `/opportunities/new`          | Create                  | Controlled form, client-side + backend validation                      |
+| `/opportunities/:id/edit`     | Edit                    | Same form pre-populated with the current record                        |
+| `/about`                      | About / API info        | Tech stack + explanation of how the frontend talks to the API          |
+| `*`                           | 404                     | Not-found fallback                                                     |
+
+### API endpoints used by the frontend
+
+| Method | Path                              | When                               |
+| ------ | --------------------------------- | ---------------------------------- |
+| GET    | `/api/opportunities?type=&q=`     | List page (with filters)           |
+| GET    | `/api/opportunities/{id}`         | Detail + Edit pages on load        |
+| POST   | `/api/opportunities`              | Create page on submit              |
+| PUT    | `/api/opportunities/{id}`         | Edit page on submit                |
+| DELETE | `/api/opportunities/{id}`         | Detail page delete confirmation    |
+
+### CSS design choices
+
+- **Design tokens** — custom palette, radii, shadows, and fonts are defined once as CSS variables on `:root` in `custom.css` so a color change is one edit, not a grep-and-replace.
+- **Brand palette** — deep navy primary (`#12356f`) for trust, amber accent (`#f5a524`) for emphasis and active states — non-Bootstrap colors that give the app its own identity.
+- **Typography** — Poppins for display headings, Inter for body; tighter letter-spacing on headings; larger `.lead` size for hero subcopy.
+- **Hero section** — gradient background, soft radial highlight, rounded bottom corners, and white CTAs that invert on hover.
+- **Interactive states** — cards lift on hover (`translateY(-2px)` + shadow), buttons darken on hover, and a visible amber focus ring (`:focus-visible`, 3px outline) keeps keyboard users oriented without adding noise for mouse users.
+- **Navbar pills** — active nav item rendered as an amber pill for quick orientation between pages.
+- **Responsive** — mobile media query collapses the hero radius and scales page-header headlines down on small screens.
+
+### React concepts demonstrated
+
+- **Components** — NavBar, Footer, PageHeader, AlertMessage, OpportunityCard, OpportunityForm, ConfirmDeleteModal (seven reusable components).
+- **Props** — OpportunityCard receives an `opportunity` and optional `onDelete`; OpportunityForm takes `initialData`, `onSubmit`, `submitLabel`, `cancelHref`; PageHeader takes `title`, `subtitle`, `actions`.
+- **State** — forms hold `formData`, `fieldErrors`, `submitting`; list/detail/edit pages track `loading`, `error`, and the fetched record.
+- **Routing** — six real routes plus a wildcard 404, all served by `BrowserRouter`. The list page reads/writes its filters to URL query params so back/forward and shared links work.
+- **Context** — `AppContext` exposes `alert`, `showAlert(type, message)`, and `clearAlert`; the Create, Edit, and Delete flows announce success through the context so the alert survives the redirect.
+- **Forms** — every input is a controlled component; required fields are marked; labels are associated with inputs via `htmlFor`/`id`; submission is blocked until client-side checks pass; backend 400 errors are mapped directly onto the same `fieldErrors` state so client-side and server-side validation render the same way.
+
+### Demo video (PA05)
+
+- **PA05 demo:** _[link to be added after recording]_
+
 ## Demo video (assignment)
 
 - **Demo:** [Yard API — database & JPA demo](https://youtu.be/nA0Sypbtrys)
