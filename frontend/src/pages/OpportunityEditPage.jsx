@@ -59,6 +59,8 @@ function OpportunityEditPage() {
     )
   }
 
+  if (!opportunity) return null
+
   return (
     <div className="container py-4">
       <PageHeader
